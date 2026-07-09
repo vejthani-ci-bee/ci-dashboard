@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: '3.11'
 
-      # ✨ แก้ไขจุดนี้: เพิ่มการติดตั้ง google-generativeai สำหรับใช้กับคีย์รุ่นใหม่
+      # ✨ แก้ไขจุดติดตั้งปลั๊กอิน: เพิ่ม google-generativeai เข้าไปในระบบของ Server
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
