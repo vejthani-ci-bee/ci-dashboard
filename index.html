@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>CI Dashboard — ตลาดโรงพยาบาลเอกชนไทย</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
@@ -57,15 +57,14 @@
   }
   .subtitle { font-size: 0.8rem; opacity: 0.65; margin-top: 6px; }
 
-  /* ── NAV TABS ── */
+  /* ── NAV TABS (ปรับแต่งเพื่อให้สไลด์บนมือถือได้ลื่นไหล ไม่หาย) ── */
   .tabs {
     background: var(--white);
     border-bottom: 2px solid var(--border);
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch; /* เพิ่มความลื่นไหลในการปัดนิ้วบน iOS */
     padding: 0 40px;
     gap: 4px;
     position: sticky;
@@ -73,7 +72,10 @@
     z-index: 100;
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   }
+  /* ซ่อนแถบ Scrollbar แต่อุปกรณ์ยังปัดเลื่อนได้ตามปกติ */
   .tabs::-webkit-scrollbar { display: none; }
+  .tabs { -ms-overflow-style: none; scrollbar-width: none; }
+  
   .tab-btn {
     padding: 14px 20px;
     border: none;
@@ -84,8 +86,9 @@
     color: var(--muted);
     cursor: pointer;
     border-bottom: 3px solid transparent;
-    white-space: nowrap;
+    white-space: nowrap; /* บังคับให้ชื่อแท็บไม่ตัดบรรทัด เพื่อให้ปัดเลื่อนได้ */
     transition: all 0.2s;
+    flex-shrink: 0; /* ป้องกันไม่ให้ปุ่มโดนบีบขนาดบนจอเล็ก */
   }
   .tab-btn:hover { color: var(--blue); }
   .tab-btn.active {
@@ -113,7 +116,7 @@
     box-shadow: var(--card-shadow);
     border-left: 4px solid var(--accent);
   }
-  .kpi-card.red   { border-left-color: var(--red); }
+  .kpi-card.red    { border-left-color: var(--red); }
   .kpi-card.green { border-left-color: var(--green); }
   .kpi-card.orange{ border-left-color: var(--orange); }
   .kpi-label { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); }
@@ -196,7 +199,7 @@
   }
   .move-item:last-child { border-bottom: none; }
   .move-dim   { min-width: 80px; font-weight: 600; color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; padding-top: 2px; }
-  .move-text  { flex: 1; color: var(--text); }
+  .move-text   { flex: 1; color: var(--text); }
   .badge {
     font-size: 0.7rem;
     font-weight: 700;
@@ -207,7 +210,7 @@
     vertical-align: middle;
   }
   .badge-verified  { background: #d4edda; color: #155724; }
-  .badge-partial   { background: #fff3cd; color: #856404; }
+  .badge-partial  { background: #fff3cd; color: #856404; }
   .badge-unconfirm { background: #f8d7da; color: #721c24; }
 
   /* ── MATRIX TABLE ── */
@@ -311,18 +314,19 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
-    .header { flex-direction: column; gap: 12px; padding: 20px; }
-    .content { padding: 20px; }
-    .tabs { padding: 0 8px; }
-    .tab-btn { padding: 12px 14px; font-size: 0.82rem; }
+    .header { flex-direction: column; gap: 12px; padding: 20px; text-align: center; }
+    .header-right { text-align: center; }
+    .content { padding: 16px 12px; }
+    .tabs { padding: 0 12px; }
+    .tab-btn { padding: 12px 14px; font-size: 0.85rem; }
     .competitor-grid { grid-template-columns: 1fr; }
     .source-list { columns: 1; }
+    .highlight-box div { grid-template-columns: 1fr !important; }
   }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-left">
     <h1>🏥 CI Dashboard — ตลาดโรงพยาบาลเอกชนไทย</h1>
@@ -334,7 +338,6 @@
   </div>
 </div>
 
-<!-- TABS -->
 <div class="tabs">
   <button class="tab-btn active" onclick="showTab('summary')">📊 Executive Summary</button>
   <button class="tab-btn" onclick="showTab('signals')">📡 Market Signals</button>
@@ -345,13 +348,9 @@
   <button class="tab-btn" onclick="showTab('sources')">📚 แหล่งอ้างอิง</button>
 </div>
 
-<!-- ══════════════════════════════════════════
-     SECTION 1: EXECUTIVE SUMMARY
-══════════════════════════════════════════ -->
 <div class="content">
-<div id="summary" class="section active">
 
-  <!-- KPI ROW -->
+<div id="summary" class="section active">
   <div class="kpi-grid">
     <div class="kpi-card red">
       <div class="kpi-label">BDMS กำไร Q1/2569</div>
@@ -379,9 +378,7 @@
     </div>
   </div>
 
-  <!-- ALERT: KEY HEADLINES -->
   <div class="sec-title"><span class="icon">🔔</span> สัญญาณสำคัญประจำงวด</div>
-
   <div class="alert gold">
     <div class="alert-icon">🔬</div>
     <div><strong>BDMS Bangkok Proton Center</strong> — ลงทุน 3,000 ล้านบาท ร่วม Medical Excellence Japan + ERIA กำหนดเปิด <strong>2572</strong> รายแรกภาคเอกชนไทย เปลี่ยนกรอบการแข่งขันสู่ระดับภูมิภาค</div>
@@ -403,7 +400,6 @@
     <div><strong>Q1/2569 กระแทกพร้อมกัน:</strong> ผู้ป่วยกัมพูชาลด 70–80% YoY เหลือ &lt;1% รายได้ BDMS; ME conflict กดดัน BDMS ส่วน Bumrungrad ยังรับมือได้ดี</div>
   </div>
 
-  <!-- STRATEGIC CONCLUSION -->
   <div class="sec-title"><span class="icon">🧭</span> ข้อสรุปเชิงกลยุทธ์สำหรับผู้บริหาร</div>
   <div class="highlight-box">
     <h3>4 แนวรบที่ผู้เล่นรายใหญ่เร่งลงทุนพร้อมกัน</h3>
@@ -417,14 +413,9 @@
   <div class="prose">
     <p>การแข่งขันไม่ได้อยู่ที่การตั้งราคา แต่อยู่ที่การเป็น <strong>Destination</strong> ของโรคยากซับซ้อน (Tertiary/Quaternary Care) และ Longevity Services ซึ่งต้องอาศัยการลงทุนล่วงหน้าสูงและสร้างสินทรัพย์ที่คู่แข่งไม่สามารถ copy ได้ในระยะสั้น ผู้ที่ลงทุนก่อนใน Infrastructure ที่ใช่จะได้เปรียบแบบ <strong>Winner-takes-most</strong></p>
   </div>
-
 </div>
 
-<!-- ══════════════════════════════════════════
-     SECTION 2: MARKET SIGNALS
-══════════════════════════════════════════ -->
 <div id="signals" class="section">
-
   <div class="sec-title"><span class="icon">📡</span> 2.1 มาโครเศรษฐกิจและภูมิรัฐศาสตร์</div>
   <div class="alert red">
     <div class="alert-icon">🌏</div>
@@ -460,25 +451,17 @@
   </div>
   <div class="alert gold">
     <div class="alert-icon">🏢</div>
-    <div><strong>Non-Healthcare Players บุกตลาด:</strong> Pruksa (Real Estate) → Vimut Hospital; Minor International (Hospitality) → Wellness Centers in Resorts สัญญาณ Convergence ของ Healthcare + Hospitality + Real Estate กำลังเร่งขึ้น</div>
+    <div><strong>Non-Healthcare Players บุกตลาด:</strong> Pruksa (Real Estate) → Vimut Hospital; Minor International (Hospitality) → Wellness Centers in Resorts สัญญาณ Convergence ของ Healthcare + Hospitality + Real Estate稳步加速</div>
   </div>
   <div class="alert blue">
     <div class="alert-icon">🤖</div>
     <div><strong>AI Healthcare Investment เพิ่มเท่าตัว:</strong> Investment ใน Generative AI สำหรับ Healthcare Asia-Pacific (ไม่รวมญี่ปุ่น) คาดเพิ่ม 2x ในปี 2568–2569 ตาม BOI Incentive และ Clinical Data ที่พร้อมมากขึ้น</div>
   </div>
-
 </div>
 
-<!-- ══════════════════════════════════════════
-     SECTION 3: COMPETITOR SNAPSHOTS
-══════════════════════════════════════════ -->
 <div id="competitors" class="section">
-
   <div class="sec-title"><span class="icon">🏨</span> ความเคลื่อนไหวรายคู่แข่ง</div>
-
   <div class="competitor-grid">
-
-    <!-- BDMS -->
     <div class="comp-card">
       <div class="comp-header navy">
         <div>
@@ -515,7 +498,6 @@
       </div>
     </div>
 
-    <!-- Bumrungrad -->
     <div class="comp-card">
       <div class="comp-header blue">
         <div>
@@ -552,7 +534,6 @@
       </div>
     </div>
 
-    <!-- BCH -->
     <div class="comp-card">
       <div class="comp-header teal">
         <div>
@@ -581,7 +562,6 @@
       </div>
     </div>
 
-    <!-- CHG -->
     <div class="comp-card">
       <div class="comp-header purple">
         <div>
@@ -610,7 +590,6 @@
       </div>
     </div>
 
-    <!-- Samitivej -->
     <div class="comp-card">
       <div class="comp-header dkgrn">
         <div>
@@ -639,7 +618,6 @@
       </div>
     </div>
 
-    <!-- Vibhavadi -->
     <div class="comp-card">
       <div class="comp-header umber">
         <div>
@@ -651,7 +629,7 @@
       <div class="comp-body">
         <div class="move-item">
           <div class="move-dim">Geographic</div>
-          <div class="move-text">สาขา Rama 2 (59 เตียง) กำหนดเปิดปี 2569 <span class="badge badge-partial">ยืนยันบางส่วน</span></div>
+          <div class="move-text">สาขา Rama 2 (59 เตียง) 定于2569年开业 <span class="badge badge-partial">ยืนยันบางส่วน</span></div>
         </div>
         <div class="move-item">
           <div class="move-dim">Digital</div>
@@ -664,7 +642,6 @@
       </div>
     </div>
 
-    <!-- BNH -->
     <div class="comp-card">
       <div class="comp-header slate">
         <div>
@@ -689,7 +666,6 @@
       </div>
     </div>
 
-    <!-- Vimut -->
     <div class="comp-card">
       <div class="comp-header maroon">
         <div>
@@ -717,22 +693,16 @@
         </div>
       </div>
     </div>
-
-  </div><!-- /.competitor-grid -->
+  </div>
 
   <div style="font-size:0.8rem;color:var(--muted);margin-top:-12px;margin-bottom:24px">
     <span class="badge badge-verified">ยืนยัน</span> = ≥2 แหล่งอ้างอิง &nbsp;|&nbsp;
     <span class="badge badge-partial">ยืนยันบางส่วน</span> = 1 แหล่ง ยังไม่มี Press Release ทางการ &nbsp;|&nbsp;
     <span class="badge badge-unconfirm">ยังไม่ยืนยัน</span> = Analyst Estimate / Forward Projection
   </div>
-
 </div>
 
-<!-- ══════════════════════════════════════════
-     SECTION 4: MATRIX
-══════════════════════════════════════════ -->
 <div id="matrix" class="section">
-
   <div class="sec-title"><span class="icon">📋</span> เมทริกซ์เปรียบเทียบ 8 มิติ</div>
   <div class="matrix-wrap">
     <table class="matrix-table">
@@ -750,52 +720,22 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>BDMS</td>
-          <td>★★★★★</td><td>★★★★★</td><td>★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★★</td><td>★★★★★</td>
-        </tr>
-        <tr>
-          <td>Bumrungrad</td>
-          <td>★★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★</td><td>★★★★</td><td>★★★★★</td>
-        </tr>
-        <tr>
-          <td>BCH</td>
-          <td>★★★</td><td>★★★</td><td>★★</td><td>★★</td><td>★★★</td><td>★★★★</td><td>★★★</td><td>★★★★</td>
-        </tr>
-        <tr>
-          <td>CHG</td>
-          <td>★★★</td><td>★★★</td><td>★★</td><td>★★</td><td>★★★</td><td>★★★</td><td>★★★</td><td>★★★</td>
-        </tr>
-        <tr>
-          <td>VIBHA</td>
-          <td>★★★</td><td>★★★</td><td>★★</td><td>★★</td><td>★★★</td><td>★★</td><td>★★</td><td>★★★</td>
-        </tr>
-        <tr>
-          <td>Samitivej</td>
-          <td>★★★★★</td><td>★★★★★</td><td>★★★★</td><td>★★★</td><td>★★★★</td><td>★★★</td><td>★★★★★</td><td>★★★★</td>
-        </tr>
-        <tr>
-          <td>BNH</td>
-          <td>★★★★</td><td>★★★★</td><td>★★★★</td><td>★★★</td><td>★★★</td><td>★★</td><td>★★★</td><td>★★★</td>
-        </tr>
-        <tr>
-          <td>Vimut</td>
-          <td>★★★</td><td>★★★</td><td>★★</td><td>★★★</td><td>★★★</td><td>★★</td><td>★★</td><td>★★★</td>
-        </tr>
+        <tr><td>BDMS</td><td>★★★★★</td><td>★★★★★</td><td>★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★★</td><td>★★★★★</td></tr>
+        <tr><td>Bumrungrad</td><td>★★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★</td><td>★★★★</td><td>★★★★★</td></tr>
+        <tr><td>BCH</td><td>★★★</td><td>★★★</td><td>★★</td><td>★★</td><td>★★★</td><td>★★★★</td><td>★★★</td><td>★★★★</td></tr>
+        <tr><td>CHG</td><td>★★★</td><td>★★★</td><td>★★</td><td>★★</td><td>★★★</td><td>★★★</td><td>★★★</td><td>★★★</td></tr>
+        <tr><td>VIBHA</td><td>★★★</td><td>★★★</td><td>★★</td><td>★★</td><td>★★★</td><td>★★</td><td>★★</td><td>★★★</td></tr>
+        <tr><td>Samitivej</td><td>★★★★★</td><td>★★★★★</td><td>★★★★</td><td>★★★</td><td>★★★★</td><td>★★★</td><td>★★★★★</td><td>★★★★</td></tr>
+        <tr><td>BNH</td><td>★★★★</td><td>★★★★</td><td>★★★★</td><td>★★★</td><td>★★★</td><td>★★</td><td>★★★</td><td>★★★</td></tr>
+        <tr><td>Vimut</td><td>★★★</td><td>★★★</td><td>★★</td><td>★★★</td><td>★★★</td><td>★★</td><td>★★</td><td>★★★</td></tr>
       </tbody>
     </table>
   </div>
   <p style="font-size:0.8rem;color:var(--muted)">★ = ต่ำสุด — ★★★★★ = สูงสุด (ประเมินเชิงคุณภาพจากข้อมูลสาธารณะ ณ วันที่ในรายงาน)</p>
-
 </div>
 
-<!-- ══════════════════════════════════════════
-     SECTION 5: STRATEGIC ASSESSMENT
-══════════════════════════════════════════ -->
 <div id="strategy" class="section">
-
   <div class="sec-title"><span class="icon">🎯</span> การประเมินเชิงกลยุทธ์</div>
-
   <div class="alert gold">
     <div class="alert-icon">⚔️</div>
     <div>
@@ -803,7 +743,6 @@
       <small>ผู้เล่นหลักทั้ง BDMS (Wellness Clinic + Mövenpick), Bumrungrad (VitalLife + Sansiri), Pruksa/Vimut, Minor International ต่างประกาศ Longevity Strategy พร้อมกัน ใครสร้าง "Integrated Data Layer" (Genomics + Biomarker + Lifestyle) ก่อนและ Lock-in ลูกค้าระยะยาวได้จะได้เปรียบแบบ Winner-takes-most BDMS Wellness Clinic และ VitalLife อยู่ใน Position ที่แข็งแกร่งกว่าอย่างชัดเจน</small>
     </div>
   </div>
-
   <div class="alert blue">
     <div class="alert-icon">⚛️</div>
     <div>
@@ -811,7 +750,6 @@
       <small>BDMS Bangkok Proton Center 3,000M฿ (เปิด 2572) กับ MEJ + ERIA เป็น Capital-intensive Asset ที่มี Regulatory + Operational Barrier สูงมาก หากสำเร็จ BDMS จะดึงผู้ป่วยมะเร็งซับซ้อนที่ปัจจุบันต้องไปสิงคโปร์หรือญี่ปุ่น เปลี่ยนการแข่งขันจากระดับไทยสู่ระดับภูมิภาค ความเสี่ยง: Timeline 2572 ห่าง 3 ปี + Demand Ramp-up ยังไม่ชัด</small>
     </div>
   </div>
-
   <div class="alert green">
     <div class="alert-icon">🏭</div>
     <div>
@@ -819,7 +757,6 @@
       <small>BCH เปิด KH Suvarnabhumi + KH Rayong (2570–2571) vs BDMS เปิด Phyathai Bowin + Sriracha 2 ไปแล้ว EEC กำลังกลายเป็น Sub-market แยกออกมา BCH ได้เปรียบด้านราคา+SSO; Phyathai-Paolo ได้เปรียบด้านแบรนด์+Network Effect การแข่งขันจะรุนแรงขึ้นใน 2570–2571</small>
     </div>
   </div>
-
   <div class="alert blue">
     <div class="alert-icon">🏝️</div>
     <div>
@@ -827,7 +764,6 @@
       <small>Bumrungrad ลงทุน $136.8M ก่อสร้างตามแผน เปิด 2570 (Hub &amp; Spoke); BDMS มีสาขาภูเก็ตอยู่แล้วและขยายต่อ Phuket กำลังกลายเป็น "Secondary Medical Cluster" รับ Wellness + Medical Tourism จาก Europe, ME, Australia — ต่างจากกรุงเทพที่พึ่ง ME + CLMV First-mover Advantage ก่อน 2570 มีความสำคัญสูง</small>
     </div>
   </div>
-
   <div class="alert red">
     <div class="alert-icon">⚠️</div>
     <div>
@@ -839,18 +775,11 @@
       </small>
     </div>
   </div>
-
 </div>
 
-<!-- ══════════════════════════════════════════
-     SECTION 6: WATCHLIST
-══════════════════════════════════════════ -->
 <div id="watchlist" class="section">
-
   <div class="sec-title"><span class="icon">⏰</span> Watchlist 30 / 60 / 90 วัน</div>
-
   <div class="watchlist-grid">
-
     <div class="watch-col">
       <div class="watch-header d30">🔴 ภายใน 30 วัน (สิงหาคม 2569)</div>
       <div class="watch-item">
@@ -870,7 +799,6 @@
         <div><strong>Thailand Health Excellence 2026</strong><span>แถลงการณ์เพิ่มเติม / ผลลัพธ์เดือนแรก (TAT Newsroom)</span></div>
       </div>
     </div>
-
     <div class="watch-col">
       <div class="watch-header d60">🟠 ภายใน 60 วัน (ก.ย.–ต.ค. 2569)</div>
       <div class="watch-item">
@@ -890,7 +818,6 @@
         <div><strong>Vimut สาขาที่ 2 หรือ 3</strong><span>ประกาศ Location ใหม่จาก 3-สาขา Pipeline 17,000M฿</span></div>
       </div>
     </div>
-
     <div class="watch-col">
       <div class="watch-header d90">🟢 ภายใน 90 วัน (พ.ย.–ธ.ค. 2569)</div>
       <div class="watch-item">
@@ -910,18 +837,11 @@
         <div><strong>Hospitality/Tech → Healthcare JV ใหม่</strong><span>สัญญาณ Disruption ระยะกลางจากผู้เล่นนอกอุตสาหกรรม</span></div>
       </div>
     </div>
-
   </div>
-
 </div>
 
-<!-- ══════════════════════════════════════════
-     SECTION 7: SOURCES
-══════════════════════════════════════════ -->
 <div id="sources" class="section">
-
   <div class="sec-title"><span class="icon">📚</span> แหล่งอ้างอิง (เข้าถึง 9 กรกฎาคม 2569)</div>
-
   <div class="sec-title" style="font-size:1rem;margin-top:20px">BDMS</div>
   <div class="source-list">
     <div class="source-item"><span class="source-num">1</span>DBS Vickers — BDMS Long-term outlook: <a href="https://www.dbs.com.sg/treasures/aics/templatedata/article/recentdevelopment/data/en/DBSV/032025/BDMS_TB_03112025.xml" target="_blank">dbs.com.sg</a></div>
@@ -973,27 +893,32 @@
     <div class="source-item"><span class="source-num">35</span>Intellify — Thailand Healthcare Outlook 2025–2030: <a href="https://www.intellifyglobal.com/thailand-healthcare-industry-outlook-2025/" target="_blank">intellifyglobal.com</a></div>
     <div class="source-item"><span class="source-num">36</span>Nation Thailand — Q1/2569 Private Hospital: <a href="https://www.nationthailand.com/health-wellness/40066609" target="_blank">nationthailand.com</a></div>
   </div>
-
 </div>
 
-</div><!-- /.content -->
-
-<!-- FOOTER -->
-<div class="footer">
-  <strong>CI Dashboard — ตลาดโรงพยาบาลเอกชนไทย</strong> · อัปเดตอัตโนมัติทุกวัน เวลา 08:00 น. โดย Claude AI<br>
+</div><div class="footer">
+  <strong>CI Dashboard — ตลาดโรงพยาบาลเอกชนไทย</strong> · อัปเดตอัตโนมัติทุกวัน เวลา 08:00 น. โดย Gemini AI<br>
   ข้อมูลจากแหล่งสาธารณะ ใช้ประกอบการตัดสินใจเชิงกลยุทธ์เท่านั้น · ไม่ใช่คำแนะนำการลงทุน
 </div>
 
 <script>
-  // Tab switching
+  // ฟังก์ชันสลับแท็บเมนูอย่างถูกต้อง
   function showTab(id) {
+    // 1. ซ่อนทุกเซกชัน
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    // 2. เอาสีแอกทีฟออกจากปุ่มเดิมทั้งหมด
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    event.target.classList.add('active');
+    
+    // 3. แสดงเซกชันที่เลือก
+    const targetSection = document.getElementById(id);
+    if (targetSection) {
+      targetSection.classList.add('active');
+    }
+    
+    // 4. ใส่สีแอกทีฟให้ปุ่มที่กดปัจจุบัน
+    if (event && event.target) {
+      event.target.classList.add('active');
+    }
   }
-
-  // Update date display
-  const d = new Date();
-  const thaiMonths = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
-                      'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+</script>
+</body>
+</html>
