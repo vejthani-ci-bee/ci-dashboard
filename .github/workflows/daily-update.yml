@@ -22,11 +22,11 @@ jobs:
         with:
           python-version: '3.11'
 
-      # ✨ แก้ไขจุดติดตั้งปลั๊กอิน: เพิ่ม google-generativeai เข้าไปในระบบของ Server
+      # ✨ ปรับปรุงจุดนี้: เปลี่ยนไปติดตั้ง google-genai ตัวใหม่ของ Google ล่าสุด
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests google-generativeai
+          pip install requests google-genai
 
       - name: Run CI Dashboard Update
         env:
