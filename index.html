@@ -62,7 +62,10 @@
     background: var(--white);
     border-bottom: 2px solid var(--border);
     display: flex;
+    flex-wrap: nowrap;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
     padding: 0 40px;
     gap: 4px;
     position: sticky;
@@ -70,6 +73,7 @@
     z-index: 100;
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   }
+  .tabs::-webkit-scrollbar { display: none; }
   .tab-btn {
     padding: 14px 20px;
     border: none;
@@ -309,7 +313,8 @@
   @media (max-width: 768px) {
     .header { flex-direction: column; gap: 12px; padding: 20px; }
     .content { padding: 20px; }
-    .tabs { padding: 0 12px; }
+    .tabs { padding: 0 8px; }
+    .tab-btn { padding: 12px 14px; font-size: 0.82rem; }
     .competitor-grid { grid-template-columns: 1fr; }
     .source-list { columns: 1; }
   }
@@ -376,12 +381,6 @@
 
   <!-- ALERT: KEY HEADLINES -->
   <div class="sec-title"><span class="icon">🔔</span> สัญญาณสำคัญประจำงวด</div>
-  
-  <div style="font-size:0.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin:20px 0 10px;border-left:3px solid var(--accent);padding-left:10px">ข่าวใหม่ — 9 กรกฎาคม 2569</div>
-  <div class="alert gold">
-<div class="alert-icon">💰</div>
-<div><strong>BDMS: การลงทุนในเทคโนโลยี AI และ Digital Health</strong> — BDMS ยังคงเดินหน้าลงทุนอย่างต่อเนื่องในเทคโนโลยี AI สำหรับการวินิจฉัยโรคและระบบ Digital Health เพื่อเพิ่มประสิทธิภาพการดูแลผู้ป่วยและขยายการเข้าถึงบริการทางการแพทย์ (ที่มา: ข้อมูลอ
-
 
   <div class="alert gold">
     <div class="alert-icon">🔬</div>
@@ -998,10 +997,3 @@
   const d = new Date();
   const thaiMonths = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน',
                       'กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
-  const thaiYear = d.getFullYear() + 543;
-  document.getElementById('reportDate').textContent =
-    d.getDate() + ' ' + thaiMonths[d.getMonth()] + ' ' + thaiYear;
-</script>
-
-</body>
-</html>
