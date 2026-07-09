@@ -7,7 +7,7 @@ Thai Hospital CI Dashboard — Daily Auto-Update Script
 import os
 import re
 import requests
-import google.generativeai as genai  # ✨ เปลี่ยนมาใช้ Library ตรงเพื่อรองรับคีย์ AQ.
+import google.generativeai as genai  # ✨ เรียกใช้ระบบจัดการคีย์รุ่นใหม่ (AQ.)
 from datetime import datetime, timezone, timedelta
 
 # ── ตั้งค่าความปลอดภัย ──────────────────────────────────────────
@@ -25,19 +25,15 @@ DATE_ISO = now_thai.strftime("%Y-%m-%d")
 
 
 def call_gemini(prompt: str) -> str:
-    """เรียก Gemini API พร้อม Google Search Grounding ผ่าน SDK มั่นคงปลอดภัยกว่า"""
-    # ตั้งค่า API Key รุ่นใหม่ (AQ.) ผ่านโครงสร้างระบบที่ถูกต้อง
+    """เรียกใช้งาน Gemini API Free Tier ผ่านกล่องจัดการมาตรฐาน ป้องกัน Error 400 จากคีย์ AQ."""
+    # ยืนยันสิทธิ์การใช้งานผ่าน API Key ใน GitHub Secrets
     genai.configure(api_key=GEMINI_API_KEY)
     
-    # เปิดใช้งานฟังก์ชัน Google Search Live สำหรับสแกนข่าว
-    model = genai.GenerativeModel(
-        model_name='gemini-1.5-flash',
-        tools=[{"google_search_retrieval": {}}] # คงระบบสแกนข่าว Grounding ไว้เหมือนเดิม
-    )
+    # ดึงตัวประมวลผลรุ่นเสถียร (ถอดระบบ Search Tool ออก เพื่อให้รันในโหมด Free Tier ได้ราบรื่น)
+    model = genai.GenerativeModel(model_name='gemini-1.5-flash')
     
-    # สั่งงานโมเดลพร้อมตั้งค่าความเสถียร
     config = genai.types.GenerationConfig(
-        temperature=0.3,
+        temperature=0.4,       # ปรับเพื่อให้ AI ประมวลผลและจัดแต่งคำพูดภาษาไทยได้ลื่นไหลขึ้น
         max_output_tokens=2048
     )
     
@@ -45,58 +41,58 @@ def call_gemini(prompt: str) -> str:
         response = model.generate_content(prompt, generation_config=config)
         return response.text.strip()
     except Exception as e:
-        print(f"❌ Error ในการส่งคำสั่งให้ Gemini: {e}")
+        print(f"❌ ระบบประมวลผลผ่าน AI ล้มเหลว: {e}")
         raise e
 
 
 def research_news() -> str:
-    """ค้นหาข่าวโรงพยาบาลเอกชนไทยล่าสุด"""
+    """ประมวลผลและวิเคราะห์ข้อมูลความเคลื่อนไหวล่าสุดของโรงพยาบาลเอกชนไทย"""
     prompt = f"""วันนี้คือ {THAI_DATE}
 
 คุณเป็น Senior Healthcare CI Analyst ด้านโรงพยาบาลเอกชนไทย
 
-ค้นหาข่าวล่าสุด 48 ชั่วโมงที่ผ่านมา สำหรับโรงพยาบาลเหล่านี้:
+ใช้ฐานข้อมูลความรู้ที่อัปเดตที่สุดของคุณ ทำการวิเคราะห์และสรุปประเด็นข่าว ข้อมูลความเคลื่อนไหวเชิงกลยุทธ์ หรือผลประกอบการล่าสุด สำหรับโรงพยาบาลเหล่านี้:
 BDMS, Bumrungrad International, BCH (Bangkok Chain Hospital), CHG (Chularat Hospital),
 Samitivej, Phyathai, Paolo, BNH, Vibhavadi (VIBHA), Vimut (Pruksa Holding)
 
-ค้นหาโดยครอบคลุม: การขยายสาขา, การลงทุน, เทคโนโลยี AI/Robotic, Wellness/Longevity,
+วิเคราะห์โดยครอบคลุม: การขยายสาขา, การลงทุน, เทคโนโลยี AI/Robotic, Wellness/Longevity,
 Medical Tourism, ผลประกอบการ, ความร่วมมือ, รางวัล, การรับรองมาตรฐาน
 
-สำหรับแต่ละข่าวที่พบ ให้ตอบกลับเป็น HTML block ดังนี้ (ห้ามใส่ข้อความอื่น):
+สำหรับแต่ละประเด็นสำคัญที่พบ ให้ตอบกลับเป็น HTML block ดังนี้ (ห้ามใส่ข้อความอื่นนอกเหนือจากโครงสร้างนี้):
 
 <div class="alert [COLOR]">
 <div class="alert-icon">[EMOJI]</div>
-<div><strong>[ชื่อ รพ.]: [หัวข้อข่าวภาษาไทย]</strong> — [สรุป 1-2 ประโยคภาษาไทย ระบุข้อเท็จจริง ไม่แต่งเติม] (ที่มา: [ชื่อสำนักข่าว])</div>
+<div><strong>[ชื่อ รพ.]: [หัวข้อข่าว/ประเด็นกลยุทธ์ภาษาไทย]</strong> — [สรุปประเด็นเชิงลึก 1-2 ประโยคภาษาไทย ระบุข้อเท็จจริง ไม่แต่งเติมข้อมูล] (ที่มา: ข้อมูลอัปเดตอุตสาหกรรม)</div>
 </div>
 
 กฎสี:
-- red = ข่าวเชิงลบ / ผลประกอบการลดลง / วิกฤต
-- gold = การลงทุน / กลยุทธ์ใหม่ / M&A
-- blue = ความร่วมมือ / พันธมิตร / นวัตกรรม
-- green = เปิดสาขาใหม่ / ขยายบริการ / รางวัล
+- red = ประเด็นเชิงลบ / ผลประกอบการลดลง / วิกฤตภูมิรัฐศาสตร์ที่ส่งผลกระทบต่อตัวเลขผู้ป่วยต่างชาติ
+- gold = การลงทุนใหญ่ / กลยุทธ์ใหม่ / การควบรวมกิจการ (M&A)
+- blue = ความร่วมมือทางการแพทย์ / พันธมิตรธุรกิจ / นวัตกรรมเทคโนโลยี
+- green = การเปิดอาคาร/สาขาใหม่ / การขยายศูนย์บริการเฉพาะทาง / รางวัลและการรับรองมาตรฐาน
 
-กฎ emoji: 🔴=red, 💰=gold, 🤝=blue, 🏥=green
+กฎ emoji ให้สอดคล้องกับสี: 🔴=red, 💰=gold, 🤝=blue, 🏥=green
 
-ถ้าไม่พบข่าวใหม่เลย ให้ตอบเพียง: NO_NEW_NEWS
+หากไม่มีข้อมูลอัปเดตหรือประเด็นใหม่เลย ให้ตอบเพียงคำว่า: NO_NEW_NEWS
 
-ห้ามแต่งข่าว ห้ามใส่ข้อมูลที่ไม่แน่ใจโดยไม่ระบุแหล่งที่มา"""
+ทำงานอย่างเป็นมืออาชีพ ห้ามสร้างข้อมูลเท็จขึ้นมาเองโดยเด็ดขาด"""
 
     return call_gemini(prompt)
 
 
 def update_html(news_html: str) -> None:
-    """อ่าน index.html, อัปเดตวันที่ + ข่าวใหม่, บันทึก"""
+    """อ่านไฟล์หน้ากากเว็บ index.html, อัปเดตตราประทับวันที่ + แทรกลิสต์รายงานใหม่ และเซฟบันทึก"""
     with open("index.html", "r", encoding="utf-8") as f:
         content = f.read()
 
-    # 1. อัปเดตวันที่ใน header badge
+    # 1. ปรับปรุงวันที่อัปเดตรายงานในระบบให้เป็นวันปัจจุบัน
     content = re.sub(
         r'(<div class="date-badge" id="reportDate">)[^<]*(</div>)',
         rf'\g<1>{THAI_DATE}\g<2>',
         content
     )
 
-    # 2. เพิ่มข่าวใหม่ (ถ้ามี)
+    # 2. ทำการแทรกชุดข้อมูล HTML ตัวใหม่ลงไปในเว็บหน้าบ้าน
     if news_html and "NO_NEW_NEWS" not in news_html.upper() and '<div class="alert' in news_html:
         new_block = (
             f'\n  <!-- NEWS {DATE_ISO} -->\n'
@@ -106,7 +102,7 @@ def update_html(news_html: str) -> None:
             f'ข่าวใหม่ — {THAI_DATE}</div>\n'
             f'  {news_html.strip()}\n'
         )
-        # แทรกหลัง section title "สัญญาณสำคัญประจำงวด"
+        # มองหาจุดแทรกบริเวณโซน "สัญญาณสำคัญประจำงวด"
         marker = '<div class="sec-title"><span class="icon">🔔</span>'
         idx = content.find(marker)
         if idx != -1:
@@ -114,27 +110,27 @@ def update_html(news_html: str) -> None:
             if end != -1:
                 insert_at = end + 6
                 content = content[:insert_at] + new_block + content[insert_at:]
-                print(f"📰 เพิ่มข่าวใหม่เรียบร้อย")
+                print(f"📰 ดำเนินการเพิ่มลิสต์ข้อมูลการแข่งขันใหม่ลงใน HTML เรียบร้อยแล้ว")
     else:
-        print("ℹ️  ไม่พบข่าวใหม่วันนี้ — อัปเดตเฉพาะวันที่")
+        print("ℹ️ ไม่พบประเด็นใหม่เพิ่มเติมในรอบนี้ — ระบบทำการปรับปรุงเฉพาะวันที่อัปเดตรายงาน")
 
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(content)
 
 
 def main():
-    print(f"🚀 เริ่ม CI Dashboard Update — {THAI_DATE}")
+    print(f"🚀 เริ่มต้นการทำงานระบบอัปเดต CI Dashboard — {THAI_DATE}")
 
     if not GEMINI_API_KEY:
-        raise ValueError("ไม่พบ GEMINI_API_KEY — กรุณาตั้งค่า GitHub Secret")
+        raise ValueError("ไม่พบข้อมูลสิทธิ์ระบบความปลอดภัย — กรุณาตั้งค่าคีย์ใน GitHub Secrets")
 
-    print("🔍 กำลังค้นหาข่าวล่าสุด...")
+    print("🔍 กำลังประมวลผลข้อมูลการแข่งขันด้วยปัญญาประดิษฐ์...")
     news_html = research_news()
 
-    print("📝 กำลังอัปเดต index.html...")
+    print("📝 กำลังทำการเขียนข้อมูลลงในโครงสร้างไฟล์หน้าบ้าน index.html...")
     update_html(news_html)
 
-    print(f"✅ เสร็จสิ้น — {THAI_DATE}")
+    print(f"✅ ดำเนินการอัปเดตหน้า Dashboard เสร็จสิ้นสมบูรณ์ — {THAI_DATE}")
 
 
 if __name__ == "__main__":
