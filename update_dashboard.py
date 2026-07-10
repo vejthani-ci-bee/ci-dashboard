@@ -7,7 +7,7 @@ Thai Hospital CI Dashboard — Daily Auto-Update Script
 import os
 import re
 import requests
-from google import genai  # ✨ เปลี่ยนมาใช้โครงสร้างแพ็กเกจเวอร์ชันล่าสุดของ Google
+from google import genai
 from google.genai import types
 from datetime import datetime, timezone, timedelta
 
@@ -28,10 +28,7 @@ DATE_ISO = now_thai.strftime("%Y-%m-%d")
 def call_gemini(prompt: str) -> str:
     """เรียกใช้งาน Gemini API ผ่าน SDK ตัวใหม่ รองรับคีย์ขึ้นต้นด้วย AQ. เต็มรูปแบบ"""
     try:
-        # ใช้ระบบ Client ตัวใหม่ ล็อกอินผ่าน API Key จาก GitHub Secrets ได้อย่างปลอดภัย
         client = genai.Client(api_key=GEMINI_API_KEY)
-        
-        # ✨ ปรับเปลี่ยนชื่อโมเดลเป็นรุ่นปัจจุบันที่ทำงานร่วมกับระบบใหม่ได้ทันที
         response = client.models.generate_content(
             model='gemini-2.5-flash',
             contents=prompt,
@@ -93,25 +90,30 @@ def update_html(news_html: str) -> None:
         content
     )
 
-    # 2. ทำการแทรกชุดข้อมูล HTML ตัวใหม่ลงไปในเว็บหน้าบ้าน
+    # 2. ทำการแทรกชุดข้อมูล HTML ตัวใหม่ลงไปในเว็บหน้าบ้านอย่างปลอดภัยต่อระบบสลับแท็บ
     if news_html and "NO_NEW_NEWS" not in news_html.upper() and '<div class="alert' in news_html:
         new_block = (
-            f'\n  \n'
+            f'\n  <!-- NEWS {DATE_ISO} -->\n'
             f'  <div style="font-size:0.8rem;font-weight:700;color:var(--muted);'
             f'text-transform:uppercase;letter-spacing:0.8px;margin:20px 0 10px;'
             f'border-left:3px solid var(--accent);padding-left:10px">'
             f'ข่าวใหม่ — {THAI_DATE}</div>\n'
             f'  {news_html.strip()}\n'
         )
-        # มองหาจุดแทรกบริเวณโซน "สัญญาณสำคัญประจำงวด"
-        marker = '<div class="sec-title"><span class="icon">🔔</span>'
-        idx = content.find(marker)
-        if idx != -1:
-            end = content.find("</div>", idx)
-            if end != -1:
-                insert_at = end + 6
-                content = content[:insert_at] + new_block + content[insert_at:]
-                print(f"📰 ดำเนินการเพิ่มลิสต์ข้อมูลการแข่งขันใหม่ลงใน HTML เรียบร้อยแล้ว")
+        
+        # ✨ ปรับปรุงจุดแทรกถาวร: แทรกลงในตำแหน่งหลังมาร์กเกอร์ข้อความพาดหัวข่าวโดยไม่รบกวนโครงสร้าง div หลัก
+        marker = '<!-- ALERT: KEY HEADLINES -->'
+        if marker in content:
+            content = content.replace(marker, marker + new_block)
+            print(f"📰 ดำเนินการเพิ่มลิสต์ข้อมูลการแข่งขันใหม่เรียบร้อยแล้ว")
+        else:
+            # สำรองกรณีหามาร์กเกอร์ไม่เจอ ให้ใส่หลังชื่อหัวข้อสัญญาณสำคัญ
+            marker_backup = '<div class="sec-title"><span class="icon">🔔</span> สัญญาณสำคัญประจำงวด</div>'
+            if marker_backup in content:
+                content = content.replace(marker_backup, marker_backup + new_block)
+                print(f"📰 ดำเนินการเพิ่มลิสต์ข้อมูลผ่านมาร์กเกอร์สำรองเรียบร้อยแล้ว")
+            else:
+                print("❌ ไม่พบตำแหน่งในการวางข้อมูลโครงสร้างหน้าเว็บ")
     else:
         print("ℹ️ ไม่พบประเด็นใหม่เพิ่มเติมในรอบนี้ — ระบบทำการปรับปรุงเฉพาะวันที่อัปเดตรายงาน")
 
