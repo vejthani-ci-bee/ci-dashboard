@@ -6,23 +6,39 @@
 <title>CI Dashboard — ตลาดโรงพยาบาลเอกชนไทย</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+
   :root {
     --navy: #0f2244; --blue: #1a3a6b; --accent: #c8973a; --accent2: #e8b84b;
     --light: #f4f7fb; --white: #ffffff; --text: #1e2a3a; --muted: #5a6a7e;
     --border: #dce4ef; --green: #1a7a4a; --red: #b33030; --orange: #c86010;
     --card-shadow: 0 2px 16px rgba(15,34,68,0.10);
   }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Sarabun', sans-serif; background: var(--light); color: var(--text); font-size: 15px; line-height: 1.7; }
-  
-  .header { background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%); color: white; padding: 28px 40px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid var(--accent); }
+
+  .header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    color: white; padding: 28px 40px 24px; display: flex; align-items: center;
+    justify-content: space-between; border-bottom: 3px solid var(--accent);
+  }
   .header-left h1 { font-size: 1.55rem; font-weight: 700; letter-spacing: 0.3px; }
   .header-left p  { font-size: 0.88rem; opacity: 0.75; margin-top: 4px; }
-  .date-badge { background: var(--accent); color: var(--navy); font-weight: 700; font-size: 0.85rem; padding: 6px 16px; border-radius: 20px; display: inline-block; }
-  
-  .tabs { background: var(--white); border-bottom: 2px solid var(--border); display: flex; overflow-x: auto; padding: 0 40px; gap: 4px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .date-badge {
+    background: var(--accent); color: var(--navy); font-weight: 700;
+    font-size: 0.85rem; padding: 6px 16px; border-radius: 20px; display: inline-block;
+  }
+
+  .tabs {
+    background: var(--white); border-bottom: 2px solid var(--border); display: flex;
+    overflow-x: auto; padding: 0 40px; gap: 4px; position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
   .tabs::-webkit-scrollbar { display: none; }
-  .tab-btn { padding: 14px 20px; border: none; background: transparent; font-family: 'Sarabun', sans-serif; font-size: 0.9rem; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .tab-btn {
+    padding: 14px 20px; border: none; background: transparent; font-family: 'Sarabun', sans-serif;
+    font-size: 0.9rem; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap;
+  }
   .tab-btn.active { color: var(--navy); font-weight: 700; border-bottom-color: var(--accent); }
 
   .content { max-width: 1280px; margin: 0 auto; padding: 32px 40px; }
@@ -33,16 +49,42 @@
   .kpi-card { background: var(--white); border-radius: 12px; padding: 20px 22px; box-shadow: var(--card-shadow); border-left: 4px solid var(--accent); }
   .kpi-card.red { border-left-color: var(--red); }
   .kpi-card.green { border-left-color: var(--green); }
+  .kpi-card.orange { border-left-color: var(--orange); }
+  .kpi-label { font-size: 0.78rem; font-weight: 600; color: var(--muted); }
   .kpi-value { font-size: 1.9rem; font-weight: 700; color: var(--navy); margin: 6px 0 2px; }
+  .kpi-sub { font-size: 0.82rem; color: var(--muted); }
 
   .sec-title { font-size: 1.2rem; font-weight: 700; color: var(--navy); margin: 28px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
   
-  .alert { border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; font-size: 0.92rem; display: flex; gap: 12px; border-left: 4px solid var(--accent); }
-  .alert.gold { background: #fff9ec; border-left-color: var(--accent); }
-  .alert.red { background: #fff0f0; border-left-color: var(--red); }
+  .alert { border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; font-size: 0.92rem; display: flex; gap: 12px; }
+  .alert.gold { background: #fff9ec; border-left: 4px solid var(--accent); }
+  .alert.red { background: #fff0f0; border-left: 4px solid var(--red); }
+  .alert.blue { background: #eef3fb; border-left: 4px solid var(--blue); }
+
+  .competitor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; margin-bottom: 32px; }
+  .comp-card { background: var(--white); border-radius: 14px; box-shadow: var(--card-shadow); overflow: hidden; }
+  .comp-header { padding: 16px 20px; color: white; background: var(--navy); font-weight: 700; }
+  .comp-body { padding: 16px 20px; }
+  .move-item { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 0.87rem; }
+  .move-item:last-child { border-bottom: none; }
+  .move-dim { min-width: 80px; font-weight: 600; color: var(--muted); font-size: 0.78rem; text-transform: uppercase; }
+  
+  .matrix-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: var(--card-shadow); }
+  .matrix-table th { background: var(--navy); color: white; padding: 12px; }
+  .matrix-table td { padding: 12px; border-bottom: 1px solid var(--border); text-align: center; }
+  .matrix-table td:first-child { text-align: left; font-weight: 700; color: var(--navy); }
+
+  .watchlist-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 32px; }
+  .watch-col { background: var(--white); border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; }
+  .watch-header { padding: 14px 18px; font-weight: 700; color: white; background: #b33030; }
+  .watch-item { padding: 12px 18px; border-bottom: 1px solid var(--border); font-size: 0.87rem; }
 
   .footer { background: var(--navy); color: rgba(255,255,255,0.5); text-align: center; padding: 20px; font-size: 0.8rem; margin-top: 40px; }
-  @media (max-width: 768px) { .header { flex-direction: column; gap: 12px; padding: 20px; text-align: center; } .content { padding: 16px 12px; .tabs { padding: 0 12px; } }
+  @media (max-width: 768px) {
+    .header { flex-direction: column; gap: 12px; padding: 20px; text-align: center; }
+    .content { padding: 16px 12px; }
+    .competitor-grid, .watchlist-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -50,7 +92,7 @@
 <div class="header">
   <div class="header-left">
     <h1>🏥 CI Dashboard — ตลาดโรงพยาบาลเอกชนไทย</h1>
-    <p>Competitive Intelligence Report · ระดับ C-Suite</p>
+    <p>Competitive Intelligence Report · ระดับ C-Suite · อัปเดตอัตโนมัติทุกวัน</p>
   </div>
   <div class="header-right">
     <div class="date-badge" id="reportDate">11 กรกฎาคม 2569</div>
@@ -60,30 +102,131 @@
 <div class="tabs">
   <button class="tab-btn active" onclick="showTab(event, 'summary')">📊 Executive Summary</button>
   <button class="tab-btn" onclick="showTab(event, 'signals')">📡 Market Signals</button>
+  <button class="tab-btn" onclick="showTab(event, 'competitors')">🏨 Competitor Snapshots</button>
+  <button class="tab-btn" onclick="showTab(event, 'matrix')">📋 Comparative Matrix</button>
+  <button class="tab-btn" onclick="showTab(event, 'watchlist')">⏰ Watchlist</button>
   <button class="tab-btn" onclick="showTab(event, 'sources')">📚 แหล่งอ้างอิง</button>
 </div>
 
 <div class="content">
+
   <div id="summary" class="section active">
     <div class="kpi-grid">
-      <div class="kpi-card red"><div class="kpi-value">4,058M฿</div></div>
-      <div class="kpi-card green"><div class="kpi-value">39.3%</div></div>
+      <div class="kpi-card red">
+        <div class="kpi-label">BDMS กำไร Q1/2569</div>
+        <div class="kpi-value">4,058M฿</div>
+        <div class="kpi-sub">▼ 7% YoY</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label">Bumrungrad EBITDA Q1</div>
+        <div class="kpi-value">39.3%</div>
+        <div class="kpi-sub">▲ สูงสุดเป็นประวัติการณ์</div>
+      </div>
+      <div class="kpi-card orange">
+        <div class="kpi-label">ตลาดรวม รพ.เอกชน</div>
+        <div class="kpi-value">Growth</div>
+        <div class="kpi-sub">เน้นกลุ่มโรคยากซับซ้อน</div>
+      </div>
     </div>
-    <div class="sec-title">🔔 สัญญาณสำคัญประจำงวด</div>
+
+    <div class="sec-title">🔔 สัญญาณสำคัญเชิงกลยุทธ์ประจำงวด</div>
     
+    <div class="alert gold">
+      <div><strong>BDMS: Bangkok Proton Center</strong> — ลงทุน 3,000 ล้านบาท ร่วมมือ Medical Excellence Japan เปิดปี 2572 พลิกกรอบการแข่งขันรักษามะเร็งขั้นสูงในภูมิภาค</div>
     </div>
+  </div>
 
   <div id="signals" class="section">
     <div class="sec-title">📡 มาโครเศรษฐกิจและภูมิรัฐศาสตร์</div>
-    <div class="alert red"><div><strong>Geopolitical Headwinds</strong> — ปัญหาความผันผวนต่างประเทศกดดันตัวเลขผู้ป่วยรายได้ต่างชาติ</div></div>
+    <div class="alert red">
+      <div><strong>Geopolitical Headwinds</strong> — ความผันผวนในตะวันออกกลางและปัญหาในกลุ่มประเทศ CLMV ส่งผลกระทบโดยตรงต่อตัวเลขผู้ป่วยรายได้ต่างชาติในงวด Q1</div>
+    </div>
+    <div class="alert blue">
+      <div><strong>Longevity Economy</strong> — การเติบโตอย่างต่อเนื่องของความต้องการศูนย์ดูแลสุขภาพองค์รวมและการแพทย์ชะลอวัยในกลุ่มผู้สูงอายุไทยที่มีกำลังซื้อสูง</div>
+    </div>
+  </div>
+
+  <div id="competitors" class="section">
+    <div class="sec-title">🏨 ความเคลื่อนไหวรายคู่แข่งเชิงลึก</div>
+    <div class="competitor-grid">
+      <div class="comp-card">
+        <div class="comp-header">BDMS Group</div>
+        <div class="comp-body">
+          <div class="move-item"><div class="move-dim">Clinical</div><div class="move-text">มุ่งเน้นศูนย์ความเป็นเลิศและการรักษาด้วยอนุภาคโปรตอน</div></div>
+          <div class="move-item"><div class="move-dim">Strategy</div><div class="move-text">ขยายเครือข่ายความร่วมมือทางการแพทย์ระดับนานาชาติ</div></div>
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-header">Bumrungrad (BH)</div>
+        <div class="comp-body">
+          <div class="move-item"><div class="move-dim">Clinical</div><div class="move-text">รักษาอัตรากำไรขั้นต้นในระดับสูงผ่านผู้ป่วยโรคยากซับซ้อน (Quaternary Care)</div></div>
+          <div class="move-item"><div class="move-dim">Strategy</div><div class="move-text">ขยายฐานผู้ป่วยต่างชาติกลุ่มทดแทนและระดับพรีเมียม</div></div>
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-header">BCH & CHG</div>
+        <div class="comp-body">
+          <div class="move-item"><div class="move-dim">Market</div><div class="move-text">ขยายศูนย์การแพทย์เฉพาะทางเพื่อดึงดูดกลุ่มผู้ป่วยประกันสังคมระดับบน</div></div>
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-header">Vimut & Vibhavadi</div>
+        <div class="comp-body">
+          <div class="move-item"><div class="move-dim">Expansion</div><div class="move-text">เน้นยุทธศาสตร์โรงพยาบาลชุมชนและการดูแลผู้สูงอายุ (Geriatric Care) ชานเมือง</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="matrix" class="section">
+    <div class="sec-title">📋 Comparative Matrix (ตารางเปรียบเทียบเชิงศักยภาพ)</div>
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>กลุ่มโรงพยาบาล</th>
+          <th>ความแข็งแกร่งของแบรนด์</th>
+          <th>ความเชี่ยวชาญเฉพาะทาง (Clinical)</th>
+          <th>สัดส่วนผู้ป่วยต่างชาติ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>BDMS เครือข่ายหลัก</td><td>★★★★★</td><td>★★★★★</td><td>ระดับสูง (กระจายทั่วประเทศ)</td></tr>
+        <tr><td>Bumrungrad (BH)</td><td>★★★★★</td><td>★★★★★</td><td>ระดับสูงมาก (เน้นกทม.)</td></tr>
+        <tr><td>BCH (กลุ่มเกษมราษฎร์)</td><td>★★★★☆</td><td>★★★★☆</td><td>ระดับปานกลาง (เน้นประกันสังคม)</td></tr>
+        <tr><td>CHG (จุฬารัตน์)</td><td>★★★★☆</td><td>★★★☆☆</td><td>ระดับปานกลาง-ต่ำ</td></tr>
+        <tr><td>Vibhavadi / Vimut</td><td>★★★☆☆</td><td>★★★☆☆</td><td>เน้นผู้ป่วยในประเทศ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="watchlist" class="section">
+    <div class="sec-title">⏰ Watchlist (ประเด็นติดตามสำคัญ)</div>
+    <div class="watchlist-grid">
+      <div class="watch-col">
+        <div class="watch-header">🔴 ภายใน 30 วัน</div>
+        <div class="watch-item">ติดตามรายงานและประกาศผลประกอบการไตรมาสถัดไปของกลุ่มการแพทย์ในตลาดหลักทรัพย์</div>
+      </div>
+      <div class="watch-col" style="border-top: 4px solid var(--orange);">
+        <div class="watch-header" style="background: var(--orange);">🟡 ภายใน 90 วัน</div>
+        <div class="watch-item">ประเมินทิศทางมาตรการสนับสนุน Medical Tourism และวีซ่ารักษาพยาบาลของภาครัฐ</div>
+      </div>
+      <div class="watch-col" style="border-top: 4px solid var(--green);">
+        <div class="watch-header" style="background: var(--green);">🟢 ระยะยาว</div>
+        <div class="watch-item">การเปิดตัวโครงสร้างพื้นฐานด้านสุขภาพขนาดใหญ่และการแข่งขันในเขต EEC</div>
+      </div>
+    </div>
   </div>
 
   <div id="sources" class="section">
     <div class="sec-title" id="referenceSection">📚 แหล่งอ้างอิง (เข้าถึง 11 กรกฎาคม 2569)</div>
+    <p style="font-size: 0.9rem; color: var(--muted);">รายงานรวบรวมข้อมูลดิบและวิเคราะห์จาก: ตลาดหลักทรัพย์แห่งประเทศไทย (SET), รายงานประจำปีกลุ่มโรงพยาบาลเอกชน, ข้อมูลแนวโน้มอุตสาหกรรมสุขภาพไทยประจำปี 2569</p>
   </div>
+
 </div>
 
-<div class="footer">CI Dashboard · อัปเดตอัตโนมัติทุกวันโดย Gemini AI</div>
+<div class="footer">
+  <strong>CI Dashboard — ตลาดโรงพยาบาลเอกชนไทย</strong> · อัปเดตข้อมูลวิเคราะห์อัตโนมัติทุกวันโดย Gemini AI
+</div>
 
 <script>
   function showTab(e, id) {
