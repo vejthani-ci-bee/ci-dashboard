@@ -119,18 +119,21 @@ OCTYPE html>
 </div>
 
 <div class="tabs">
-  <button class="tab-btn active" onclick="showTab(event, 'summary')">📊 Executive Summary</button>
+  <button class="tab-btn active" onclick="showTab(event, 'competitors')">🏨 Competitor Snapshots</button>
+  <button class="tab-btn" onclick="showTab(event, 'kpioverview')">📊 KPI Overview</button>
+  <button class="tab-btn" onclick="showTab(event, 'strategicalerts')">🔔 Strategic Alerts</button>
+  <button class="tab-btn" onclick="showTab(event, 'latestnews')">🆕 Latest News</button>
   <button class="tab-btn" onclick="showTab(event, 'signals')">📡 Market Signals</button>
   <button class="tab-btn" onclick="showTab(event, 'matrix')">📋 Comparative Matrix</button>
-  <button class="tab-btn" onclick="showTab(event, 'watchlist')">⏰ Watchlist</button>
+  <button class="tab-btn" onclick="showTab(event, 'watchlistonly')">⏰ Watchlist</button>
+  <button class="tab-btn" onclick="showTab(event, 'recentupdates')">📰 Recent Updates</button>
   <button class="tab-btn" onclick="showTab(event, 'sources')">📚 แหล่งอ้างอิง</button>
 </div>
 
 <div class="content">
 
-  <div id="summary" class="section active">
-
-    <div class="sec-title">🏨 ความเคลื่อนไหวรายคู่แข่งเชิงลึก</div>
+  <div id="competitors" class="section active">
+<div class="sec-title">🏨 ความเคลื่อนไหวรายคู่แข่งเชิงลึก</div>
     <div class="competitor-grid">
       <div class="comp-card">
         <div class="comp-header">BDMS Group</div>
@@ -161,7 +164,11 @@ OCTYPE html>
     </div>
 
 
-    <div class="kpi-grid">
+    
+  </div>
+
+  <div id="kpioverview" class="section">
+<div class="kpi-grid">
       <div class="kpi-card red">
         <div class="kpi-label">BDMS กำไร Q1/2569</div>
         <div class="kpi-value">4,058M฿</div>
@@ -179,14 +186,22 @@ OCTYPE html>
       </div>
     </div>
 
-    <div class="sec-title">🔔 สัญญาณสำคัญเชิงกลยุทธ์ประจำงวด</div>
+    
+  </div>
+
+  <div id="strategicalerts" class="section">
+<div class="sec-title">🔔 สัญญาณสำคัญเชิงกลยุทธ์ประจำงวด</div>
     
     <div class="alert gold">
       <div><strong>BDMS: Bangkok Proton Center</strong> — ลงทุน 3,000 ล้านบาท ร่วมมือ Medical Excellence Japan เปิดปี 2572 พลิกกรอบการแข่งขันรักษามะเร็งขั้นสูงในภูมิภาค</div>
     </div>
   </div>
 
-  <div class="sec-title" style="margin-top:28px"><span class="icon">🆕
+  
+  </div>
+
+  <div id="latestnews" class="section">
+<div class="sec-title" style="margin-top:28px"><span class="icon">🆕
 
 
 </div>
@@ -244,9 +259,11 @@ OCTYPE html>
   <div style="font-size:1.5rem;flex-shrink:0;">⚡</div>
   <div><strong>BCH: Geopolitical กดดันระยะสั้น — รายได้ SSO ยืนหยัด +4.2% YoY</strong> <span style="display:inline-block;background:rgba(255,159,67,.1);color:#ff9f43;border:1px solid #ff9f43;border-radius:10px;font-size:.7rem;padding:1px 7px;margin-left:6px;">ยังไม่ยืนยันทั้งหมด</span><br>
   BCH เผชิญแรงกดดัน Geopolitical ในตะวันออกกลางและ CLMV แต่รายได้ SSO ยังเติบโต +4.2% YoY สะท้อน Domestic Business แข็งแกร่ง — กระทบ: ฐาน SSO ช่วยกันชนความเสี่ยง International</div>
-</div>
 
-<div id="signals" class="section">
+  </div>
+
+  <div id="signals" class="section">
+
     <div class="sec-title">📡 มาโครเศรษฐกิจและภูมิรัฐศาสตร์</div>
     <div class="alert red">
       <div><strong>Geopolitical Headwinds</strong> — ความผันผวนในตะวันออกกลางและปัญหาในกลุ่มประเทศ CLMV ส่งผลกระทบโดยตรงต่อตัวเลขผู้ป่วยรายได้ต่างชาติในงวด Q1</div>
@@ -254,11 +271,11 @@ OCTYPE html>
     <div class="alert blue">
       <div><strong>Longevity Economy</strong> — การเติบโตอย่างต่อเนื่องของความต้องการศูนย์ดูแลสุขภาพองค์รวมและการแพทย์ชะลอวัยในกลุ่มผู้สูงอายุไทยที่มีกำลังซื้อสูง</div>
     </div>
+  
   </div>
 
-  
-
   <div id="matrix" class="section">
+
     <div class="sec-title">📋 Comparative Matrix (ตารางเปรียบเทียบเชิงศักยภาพ)</div>
     <table class="matrix-table">
       <thead>
@@ -277,9 +294,11 @@ OCTYPE html>
         <tr><td>Vibhavadi / Vimut</td><td>★★★☆☆</td><td>★★★☆☆</td><td>เน้นผู้ป่วยในประเทศ</td></tr>
       </tbody>
     </table>
+  
   </div>
 
-  <div id="watchlist" class="section">
+  <div id="watchlistonly" class="section">
+
     <div class="sec-title">⏰ Watchlist (ประเด็นติดตามสำคัญ)</div>
     <div class="watchlist-grid">
       <div class="watch-col">
@@ -299,7 +318,11 @@ OCTYPE html>
 
   
 
-  <div class="sec-title" style="margin-top:28px"><span class="icon">📰</span> ข่าวใหม่ 15 กรกฎาคม 2569</div>
+  
+  </div>
+
+  <div id="recentupdates" class="section">
+<div class="sec-title" style="margin-top:28px"><span class="icon">📰</span> ข่าวใหม่ 15 กรกฎาคม 2569</div>
 
   <div class="alert gold">
     <div class="alert-icon">🏗️</div>
@@ -368,6 +391,9 @@ OCTYPE html>
   <div style="font-size:1.5rem;flex-shrink:0;">🏗️</div>
   <div><strong>BDMS: ยืนยันแผนขยาย ~800 เตียงใหม่ สู่ 9,600 เตียง ภายในสิ้นปี 2570 — เร่งกว่าเป้าเดิม 9,300</strong> <span style="display:inline-block;background:rgba(76,206,160,.15);color:#4ccea0;border:1px solid #4ccea0;border-radius:10px;font-size:.7rem;padding:1px 7px;margin-left:6px;">ยืนยันแล้ว</span><br>
   BDMS ยืนยันแผนเพิ่มกำลังรองรับสู่ 9,600 เตียง สิ้นปี 2570 สูงกว่าเป้าเดิม 9,300 เตียง สะท้อนความมั่นใจในอุปสงค์ระยะยาวจากประชากรสูงอายุและ Medical Tourism ต่างชาติ ประกอบกับ BDMS Silver Wellness &amp; Residence กลาง Bangkok เปิดปี 2573 กระทบ: Vejthani ต้องเร่งขยาย Supply รับมือคู่แข่งที่กำลัง Scale อย่างรวดเร็ว — <a href="https://www.bangkokpost.com/business/investment/2969303/bangkok-hospital-operator-steps-up-expansion" target="_blank">Bangkok Post</a></div>
+
+  </div>
+
 </div>
 
 <div id="sources" class="section">
