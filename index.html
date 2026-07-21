@@ -121,7 +121,6 @@ OCTYPE html>
 <div class="tabs">
   <button class="tab-btn active" onclick="showTab(event, 'summary')">📊 Executive Summary</button>
   <button class="tab-btn" onclick="showTab(event, 'signals')">📡 Market Signals</button>
-  <button class="tab-btn" onclick="showTab(event, 'competitors')">🏨 Competitor Snapshots</button>
   <button class="tab-btn" onclick="showTab(event, 'matrix')">📋 Comparative Matrix</button>
   <button class="tab-btn" onclick="showTab(event, 'watchlist')">⏰ Watchlist</button>
   <button class="tab-btn" onclick="showTab(event, 'sources')">📚 แหล่งอ้างอิง</button>
@@ -130,6 +129,38 @@ OCTYPE html>
 <div class="content">
 
   <div id="summary" class="section active">
+
+    <div class="sec-title">🏨 ความเคลื่อนไหวรายคู่แข่งเชิงลึก</div>
+    <div class="competitor-grid">
+      <div class="comp-card">
+        <div class="comp-header">BDMS Group</div>
+        <div class="comp-body">
+          <div class="move-item"><div class="move-dim">Clinical</div><div class="move-text">มุ่งเน้นศูนย์ความเป็นเลิศและการรักษาด้วยอนุภาคโปรตอน</div></div>
+          <div class="move-item"><div class="move-dim">Strategy</div><div class="move-text">ขยายเครือข่ายความร่วมมือทางการแพทย์ระดับนานาชาติ</div></div>
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-header">Bumrungrad (BH)</div>
+        <div class="comp-body">
+          <div class="move-item"><div class="move-dim">Clinical</div><div class="move-text">รักษาอัตรากำไรขั้นต้นในระดับสูงผ่านผู้ป่วยโรคยากซับซ้อน (Quaternary Care)</div></div>
+          <div class="move-item"><div class="move-dim">Strategy</div><div class="move-text">ขยายฐานผู้ป่วยต่างชาติกลุ่มทดแทนและระดับพรีเมียม</div></div>
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-header">BCH & CHG</div>
+        <div class="comp-body">
+          <div class="move-item"><div class="move-dim">Market</div><div class="move-text">ขยายศูนย์การแพทย์เฉพาะทางเพื่อดึงดูดกลุ่มผู้ป่วยประกันสังคมระดับบน</div></div>
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-header">Vimut & Vibhavadi</div>
+        <div class="comp-body">
+          <div class="move-item"><div class="move-dim">Expansion</div><div class="move-text">เน้นยุทธศาสตร์โรงพยาบาลชุมชนและการดูแลผู้สูงอายุ (Geriatric Care) ชานเมือง</div></div>
+        </div>
+      </div>
+    </div>
+
+
     <div class="kpi-grid">
       <div class="kpi-card red">
         <div class="kpi-label">BDMS กำไร Q1/2569</div>
@@ -225,37 +256,7 @@ OCTYPE html>
     </div>
   </div>
 
-  <div id="competitors" class="section">
-    <div class="sec-title">🏨 ความเคลื่อนไหวรายคู่แข่งเชิงลึก</div>
-    <div class="competitor-grid">
-      <div class="comp-card">
-        <div class="comp-header">BDMS Group</div>
-        <div class="comp-body">
-          <div class="move-item"><div class="move-dim">Clinical</div><div class="move-text">มุ่งเน้นศูนย์ความเป็นเลิศและการรักษาด้วยอนุภาคโปรตอน</div></div>
-          <div class="move-item"><div class="move-dim">Strategy</div><div class="move-text">ขยายเครือข่ายความร่วมมือทางการแพทย์ระดับนานาชาติ</div></div>
-        </div>
-      </div>
-      <div class="comp-card">
-        <div class="comp-header">Bumrungrad (BH)</div>
-        <div class="comp-body">
-          <div class="move-item"><div class="move-dim">Clinical</div><div class="move-text">รักษาอัตรากำไรขั้นต้นในระดับสูงผ่านผู้ป่วยโรคยากซับซ้อน (Quaternary Care)</div></div>
-          <div class="move-item"><div class="move-dim">Strategy</div><div class="move-text">ขยายฐานผู้ป่วยต่างชาติกลุ่มทดแทนและระดับพรีเมียม</div></div>
-        </div>
-      </div>
-      <div class="comp-card">
-        <div class="comp-header">BCH & CHG</div>
-        <div class="comp-body">
-          <div class="move-item"><div class="move-dim">Market</div><div class="move-text">ขยายศูนย์การแพทย์เฉพาะทางเพื่อดึงดูดกลุ่มผู้ป่วยประกันสังคมระดับบน</div></div>
-        </div>
-      </div>
-      <div class="comp-card">
-        <div class="comp-header">Vimut & Vibhavadi</div>
-        <div class="comp-body">
-          <div class="move-item"><div class="move-dim">Expansion</div><div class="move-text">เน้นยุทธศาสตร์โรงพยาบาลชุมชนและการดูแลผู้สูงอายุ (Geriatric Care) ชานเมือง</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  
 
   <div id="matrix" class="section">
     <div class="sec-title">📋 Comparative Matrix (ตารางเปรียบเทียบเชิงศักยภาพ)</div>
