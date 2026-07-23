@@ -119,20 +119,46 @@ OCTYPE html>
 </div>
 
 <div class="tabs">
+  <button class="tab-btn active" onclick="showTab(event, 'watchlistonly')">⏰ Watchlist</button>
   <button class="tab-btn" onclick="showTab(event, 'competitors')">🏨 Competitor Snapshots</button>
   <button class="tab-btn" onclick="showTab(event, 'kpioverview')">📊 KPI Overview</button>
   <button class="tab-btn" onclick="showTab(event, 'strategicalerts')">🔔 Strategic Alerts</button>
-  <button class="tab-btn active" onclick="showTab(event, 'matrix')">📋 Comparative Matrix</button>
+  <button class="tab-btn" onclick="showTab(event, 'matrix')">📋 Comparative Matrix</button>
   <button class="tab-btn" onclick="showTab(event, 'latestnews')">🆕 Latest News</button>
   <button class="tab-btn" onclick="showTab(event, 'signals')">📡 Market Signals</button>
-  <button class="tab-btn" onclick="showTab(event, 'watchlistonly')">⏰ Watchlist</button>
+  
   <button class="tab-btn" onclick="showTab(event, 'recentupdates')">📰 Recent Updates</button>
   <button class="tab-btn" onclick="showTab(event, 'sources')">📚 แหล่งอ้างอิง</button>
 </div>
 
 <div class="content">
 
-  <div id="competitors" class="section">
+  <div id="watchlistonly" class="section active">
+
+    <div class="sec-title">⏰ Watchlist (ประเด็นติดตามสำคัญ)</div>
+    <div class="watchlist-grid">
+      <div class="watch-col">
+        <div class="watch-header">🔴 ภายใน 30 วัน</div>
+        <div class="watch-item">ติดตามรายงานและประกาศผลประกอบการไตรมาสถัดไปของกลุ่มการแพทย์ในตลาดหลักทรัพย์</div>
+      </div>
+      <div class="watch-col" style="border-top: 4px solid var(--orange);">
+        <div class="watch-header" style="background: var(--orange);">🟡 ภายใน 90 วัน</div>
+        <div class="watch-item">ประเมินทิศทางมาตรการสนับสนุน Medical Tourism และวีซ่ารักษาพยาบาลของภาครัฐ</div>
+      </div>
+      <div class="watch-col" style="border-top: 4px solid var(--green);">
+        <div class="watch-header" style="background: var(--green);">🟢 ระยะยาว</div>
+        <div class="watch-item">การเปิดตัวโครงสร้างพื้นฐานด้านสุขภาพขนาดใหญ่และการแข่งขันในเขต EEC</div>
+      </div>
+    </div>
+  </div>
+
+  
+
+  
+  </div>
+
+  
+<div id="competitors" class="section">
 <div class="sec-title">🏨 ความเคลื่อนไหวรายคู่แข่งเชิงลึก</div>
     <div class="competitor-grid">
       <div class="comp-card">
@@ -200,7 +226,7 @@ OCTYPE html>
   
   </div>
 
-  <div id="matrix" class="section active">
+  <div id="matrix" class="section">
 
     <div class="sec-title">📋 Comparative Matrix (ตารางเปรียบเทียบเชิงศักยภาพ)</div>
     <table class="matrix-table">
@@ -358,30 +384,6 @@ OCTYPE html>
     <div class="alert blue">
       <div><strong>Longevity Economy</strong> — การเติบโตอย่างต่อเนื่องของความต้องการศูนย์ดูแลสุขภาพองค์รวมและการแพทย์ชะลอวัยในกลุ่มผู้สูงอายุไทยที่มีกำลังซื้อสูง</div>
     </div>
-  
-  </div>
-
-  <div id="watchlistonly" class="section">
-
-    <div class="sec-title">⏰ Watchlist (ประเด็นติดตามสำคัญ)</div>
-    <div class="watchlist-grid">
-      <div class="watch-col">
-        <div class="watch-header">🔴 ภายใน 30 วัน</div>
-        <div class="watch-item">ติดตามรายงานและประกาศผลประกอบการไตรมาสถัดไปของกลุ่มการแพทย์ในตลาดหลักทรัพย์</div>
-      </div>
-      <div class="watch-col" style="border-top: 4px solid var(--orange);">
-        <div class="watch-header" style="background: var(--orange);">🟡 ภายใน 90 วัน</div>
-        <div class="watch-item">ประเมินทิศทางมาตรการสนับสนุน Medical Tourism และวีซ่ารักษาพยาบาลของภาครัฐ</div>
-      </div>
-      <div class="watch-col" style="border-top: 4px solid var(--green);">
-        <div class="watch-header" style="background: var(--green);">🟢 ระยะยาว</div>
-        <div class="watch-item">การเปิดตัวโครงสร้างพื้นฐานด้านสุขภาพขนาดใหญ่และการแข่งขันในเขต EEC</div>
-      </div>
-    </div>
-  </div>
-
-  
-
   
   </div>
 
